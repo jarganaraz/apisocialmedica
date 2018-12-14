@@ -1,0 +1,99 @@
+
+C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177
+    child.send('shutdown');
+          ^
+
+TypeError: Cannot read property 'send' of null
+    at process.killkid (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177:11)
+    at process.emit (events.js:182:13)
+    at process.exit (internal/process.js:164:15)
+    at monitor (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:99:17)
+    at ChildProcess.<anonymous> (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:170:5)
+    at ChildProcess.emit (events.js:182:13)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:235:12)
+C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177
+    child.send('shutdown');
+          ^
+
+TypeError: Cannot read property 'send' of null
+    at process.killkid (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177:11)
+    at process.emit (events.js:182:13)
+    at process.exit (internal/process.js:164:15)
+    at monitor (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:99:17)
+    at ChildProcess.<anonymous> (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:170:5)
+    at ChildProcess.emit (events.js:182:13)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:235:12)
+C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177
+    child.send('shutdown');
+          ^
+
+TypeError: Cannot read property 'send' of null
+    at process.killkid (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177:11)
+    at process.emit (events.js:182:13)
+    at process.exit (internal/process.js:164:15)
+    at monitor (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:99:17)
+    at ChildProcess.<anonymous> (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:170:5)
+    at ChildProcess.emit (events.js:182:13)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:235:12)
+Options:
+  --file             The absolute path of the script to be run as a process.                                               [required]
+  --cwd              The absolute path of the current working directory of the script to be run as a process.            
+  --log              The descriptive name of the log for the process                                                       [required]
+  --eventlog         The event log container. This must be APPLICATION or SYSTEM.                                          [default: "APPLICATION"]
+  --maxretries       The maximim number of times the process will be auto-restarted.                                       [default: -1]
+  --maxrestarts      The maximim number of times the process should be restarted within a 60 second period shutting down.  [default: 5]
+  --wait             The number of seconds between each restart attempt.                                                   [default: 1]
+  --grow             A percentage growth rate at which the wait time is increased.                                         [default: 0.25]
+  --abortonerror     Do not attempt to restart the process if it fails with an error,                                      [default: "no"]
+  --stopparentfirst  Allow the script to exit using a shutdown message.                                                    [default: "no"]
+
+Missing required arguments: file
+Options:
+  --file             The absolute path of the script to be run as a process.                                               [required]
+  --cwd              The absolute path of the current working directory of the script to be run as a process.            
+  --log              The descriptive name of the log for the process                                                       [required]
+  --eventlog         The event log container. This must be APPLICATION or SYSTEM.                                          [default: "APPLICATION"]
+  --maxretries       The maximim number of times the process will be auto-restarted.                                       [default: -1]
+  --maxrestarts      The maximim number of times the process should be restarted within a 60 second period shutting down.  [default: 5]
+  --wait             The number of seconds between each restart attempt.                                                   [default: 1]
+  --grow             A percentage growth rate at which the wait time is increased.                                         [default: 0.25]
+  --abortonerror     Do not attempt to restart the process if it fails with an error,                                      [default: "no"]
+  --stopparentfirst  Allow the script to exit using a shutdown message.                                                    [default: "no"]
+
+Missing required arguments: file
+(node:17668) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:4840) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:7756) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:5440) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177
+    child.send('shutdown');
+          ^
+
+TypeError: Cannot read property 'send' of null
+    at process.killkid (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177:11)
+    at process.emit (events.js:182:13)
+    at process.exit (internal/process.js:164:15)
+    at monitor (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:99:17)
+    at ChildProcess.<anonymous> (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:170:5)
+    at ChildProcess.emit (events.js:182:13)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:235:12)
+(node:13216) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:12756) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:12916) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177
+    child.send('shutdown');
+          ^
+
+TypeError: Cannot read property 'send' of null
+    at process.killkid (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:177:11)
+    at process.emit (events.js:182:13)
+    at process.exit (internal/process.js:164:15)
+    at monitor (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:99:17)
+    at ChildProcess.<anonymous> (C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js:170:5)
+    at ChildProcess.emit (events.js:182:13)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:235:12)
+(node:11548) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:5296) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:5348) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+(node:5348) [DEP0079] DeprecationWarning: Custom inspection function on Objects via .inspect() is deprecated
+(node:5036) DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client

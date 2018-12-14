@@ -1,0 +1,102 @@
+2018-09-10 10:51:34 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 10:51:34 - Started 9024
+2018-09-10 10:51:54 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 10:51:54 - Started 17816
+2018-09-10 10:54:00 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 10:54:00 - Started 2392
+2018-09-10 10:57:07 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 10:57:07 - Started 6692
+2018-09-10 11:00:41 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:00:41 - Started 8876
+2018-09-10 11:01:09 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:01:09 - Started 4348
+2018-09-10 11:06:49 - Starting C:\Program Files\nodejs\node.exe  C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:06:49 - Started 7156
+2018-09-10 11:10:02 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:10:02 - Started 5392
+2018-09-10 11:10:45 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:10:45 - Started 13348
+2018-09-10 11:10:57 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js C:\Users\Julian-Vm\Desktop\socialmedik\api\app.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:10:57 - Started 10552
+2018-09-10 11:14:16 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\index.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:14:16 - Started 2784
+2018-09-10 11:28:25 - Stopping nodewebssvce.exe
+2018-09-10 11:28:25 - ProcessKill 2784
+2018-09-10 11:28:25 - Shutdown exception
+Message:El servidor de objeto se va a detener cuando el servicio de OLE se ponga en contacto con él (Excepción de HRESULT: 0x80080008 (CO_E_SERVER_STOPPING))
+Stacktrace:   en System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   en System.Management.ManagementScope.InitializeGuts(Object o)
+   en System.Management.ManagementScope.Initialize()
+   en System.Management.ManagementObjectSearcher.Initialize()
+   en System.Management.ManagementObjectSearcher.Get()
+   en winsw.WrapperService.GetChildPids(Int32 pid)
+   en winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   en winsw.WrapperService.StopIt()
+   en winsw.WrapperService.OnShutdown()
+2018-09-10 11:28:50 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\index.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:28:50 - Started 3404
+2018-09-10 11:29:33 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\index.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:29:33 - Started 13104
+2018-09-10 11:30:42 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\index.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:30:42 - Started 11316
+2018-09-10 11:40:49 - Stopping nodewebssvce.exe
+2018-09-10 11:40:49 - ProcessKill 11316
+2018-09-10 11:40:49 - Shutdown exception
+Message:Se está cerrando el sistema. (Excepción de HRESULT: 0x8007045B)
+Stacktrace:   en System.Runtime.InteropServices.Marshal.ThrowExceptionForHRInternal(Int32 errorCode, IntPtr errorInfo)
+   en System.Management.ManagementScope.InitializeGuts(Object o)
+   en System.Management.ManagementScope.Initialize()
+   en System.Management.ManagementObjectSearcher.Initialize()
+   en System.Management.ManagementObjectSearcher.Get()
+   en winsw.WrapperService.GetChildPids(Int32 pid)
+   en winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   en winsw.WrapperService.StopIt()
+   en winsw.WrapperService.OnShutdown()
+2018-09-10 11:41:07 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\index.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-10 11:41:08 - Started 4300
+2018-09-11 14:30:47 - Stopping nodewebssvce.exe
+2018-09-11 14:30:47 - ProcessKill 4300
+2018-09-11 14:30:47 - Found child process: 4320 Name: conhost.exe
+2018-09-11 14:30:47 - Found child process: 5296 Name: node.exe
+2018-09-11 14:30:47 - Stopping process 4320
+2018-09-11 14:30:48 - Send SIGINT 4320
+2018-09-11 14:30:48 - SIGINT to 4320 failed - Killing as fallback
+2018-09-11 14:30:48 - Stopping process 5296
+2018-09-11 14:30:48 - Send SIGINT 5296
+2018-09-11 14:30:48 - SIGINT to 5296 failed - Killing as fallback
+2018-09-11 14:30:48 - Stopping process 4300
+2018-09-11 14:30:48 - Send SIGINT 4300
+2018-09-11 14:30:48 - SIGINT to 4300 failed - Killing as fallback
+2018-09-11 14:30:48 - Finished nodewebssvce.exe
+2018-09-13 09:06:18 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\index.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-13 09:06:18 - Started 4672
+2018-09-13 11:46:31 - Stopping nodewebssvce.exe
+2018-09-13 11:46:31 - ProcessKill 4672
+2018-09-13 11:46:31 - Found child process: 4684 Name: conhost.exe
+2018-09-13 11:46:31 - Found child process: 5348 Name: node.exe
+2018-09-13 11:46:31 - Stopping process 4684
+2018-09-13 11:46:31 - Send SIGINT 4684
+2018-09-13 11:46:31 - SIGINT to 4684 failed - Killing as fallback
+2018-09-13 11:46:31 - Stopping process 5348
+2018-09-13 11:46:31 - Send SIGINT 5348
+2018-09-13 11:46:31 - SIGINT to 5348 failed - Killing as fallback
+2018-09-13 11:46:31 - Stopping process 4672
+2018-09-13 11:46:31 - Send SIGINT 4672
+2018-09-13 11:46:31 - SIGINT to 4672 failed - Killing as fallback
+2018-09-13 11:46:31 - Finished nodewebssvce.exe
+2018-09-21 12:27:29 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Julian-Vm\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Julian-Vm\Desktop\socialmedik\api\index.js --log "nodewebssvce wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2018-09-21 12:27:29 - Started 4192
+2018-09-25 14:34:00 - Stopping nodewebssvce.exe
+2018-09-25 14:34:00 - ProcessKill 4192
+2018-09-25 14:34:01 - Found child process: 4220 Name: conhost.exe
+2018-09-25 14:34:01 - Found child process: 5036 Name: node.exe
+2018-09-25 14:34:01 - Stopping process 4220
+2018-09-25 14:34:01 - Send SIGINT 4220
+2018-09-25 14:34:01 - SIGINT to 4220 failed - Killing as fallback
+2018-09-25 14:34:01 - Stopping process 5036
+2018-09-25 14:34:01 - Send SIGINT 5036
+2018-09-25 14:34:01 - SIGINT to 5036 failed - Killing as fallback
+2018-09-25 14:34:01 - Stopping process 4192
+2018-09-25 14:34:01 - Send SIGINT 4192
+2018-09-25 14:34:01 - SIGINT to 4192 failed - Killing as fallback
+2018-09-25 14:34:01 - Finished nodewebssvce.exe

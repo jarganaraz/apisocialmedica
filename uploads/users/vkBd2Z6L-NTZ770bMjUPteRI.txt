@@ -1,0 +1,39 @@
+Para ver los estudios orden correcto
+* user y Pass: admin admin
+* contraseñas para base de datos: 1947
+
+Para inicializar
+localhost/
+127.0.0.1
+192.168.2.188
+
+Estructura de las carpetas
+
+Editor:
+Application
+|---->Core / My Controller ---------------Controlador principal padre
+|---->Controllers / todos los conntrolladores hijos
+|---->Models / Estudio_model    Conexion base de datos post
+|---->Views / todas las vistas que cargan la aplicacion
+
+Assets
+|---->ckeditor 
+	|----> Plugins 
+		|---->lo que quieras agregar 
+	|---->
+	AGREGAR EN EL config esto
+
+
+VIEWER:
+Application
+|---->Core / My Controller 
+|---->Controllers / todos los conntrolladores hijos
+|---->Models / Estudio_model    Conexion base de datos post
+|---->Views / todas las vistas que cargan la aplicacion
+
+Assets
+|---->ckeditor 
+	|----> Plugins 
+		|---->lo que quieras agregar 
+	|---->
+	AGREGAR EN EL config esto

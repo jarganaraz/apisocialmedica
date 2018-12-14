@@ -31,7 +31,7 @@ function puntuar(req,res){
     //if(req.user.sub)
     puntaje.emitter = req.user.sub
     if(req.body.receiver)
-    puntaje.receiver = req.body.receiver;
+    puntaje.receiver = req.body.receiver;                                         
 
    Puntaje.find(
    { receiver : puntaje.receiver, 

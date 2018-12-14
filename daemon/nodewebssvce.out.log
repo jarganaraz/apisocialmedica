@@ -1,0 +1,120 @@
+la conexion se realizo bien!!
+servidor creado
+{ MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+    at Pool.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\topologies\server.js:336:35)
+    at Pool.emit (events.js:182:13)
+    at Connection.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\pool.js:280:12)
+    at Object.onceWrapper (events.js:273:13)
+    at Connection.emit (events.js:182:13)
+    at Socket.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\connection.js:189:49)
+    at Object.onceWrapper (events.js:273:13)
+    at Socket.emit (events.js:182:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+  name: 'MongoError',
+  message: 'failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+{ MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+    at Pool.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\topologies\server.js:336:35)
+    at Pool.emit (events.js:182:13)
+    at Connection.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\pool.js:280:12)
+    at Object.onceWrapper (events.js:273:13)
+    at Connection.emit (events.js:182:13)
+    at Socket.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\connection.js:189:49)
+    at Object.onceWrapper (events.js:273:13)
+    at Socket.emit (events.js:182:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+  name: 'MongoError',
+  message: 'failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+{ MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+    at Pool.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\topologies\server.js:336:35)
+    at Pool.emit (events.js:182:13)
+    at Connection.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\pool.js:280:12)
+    at Object.onceWrapper (events.js:273:13)
+    at Connection.emit (events.js:182:13)
+    at Socket.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\connection.js:189:49)
+    at Object.onceWrapper (events.js:273:13)
+    at Socket.emit (events.js:182:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+  name: 'MongoError',
+  message: 'failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+{ MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+    at Pool.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\topologies\server.js:336:35)
+    at Pool.emit (events.js:182:13)
+    at Connection.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\pool.js:280:12)
+    at Object.onceWrapper (events.js:273:13)
+    at Connection.emit (events.js:182:13)
+    at Socket.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\connection.js:189:49)
+    at Object.onceWrapper (events.js:273:13)
+    at Socket.emit (events.js:182:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+  name: 'MongoError',
+  message: 'failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+{ MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+    at Pool.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\topologies\server.js:336:35)
+    at Pool.emit (events.js:182:13)
+    at Connection.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\pool.js:280:12)
+    at Object.onceWrapper (events.js:273:13)
+    at Connection.emit (events.js:182:13)
+    at Socket.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\connection.js:189:49)
+    at Object.onceWrapper (events.js:273:13)
+    at Socket.emit (events.js:182:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+  name: 'MongoError',
+  message: 'failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+{ MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+    at Pool.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\topologies\server.js:336:35)
+    at Pool.emit (events.js:182:13)
+    at Connection.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\pool.js:280:12)
+    at Object.onceWrapper (events.js:273:13)
+    at Connection.emit (events.js:182:13)
+    at Socket.<anonymous> (C:\Users\Julian-Vm\Desktop\socialmedik\api\node_modules\mongodb-core\lib\connection\connection.js:189:49)
+    at Object.onceWrapper (events.js:273:13)
+    at Socket.emit (events.js:182:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+  name: 'MongoError',
+  message: 'failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+la conexion se realizo bien!!
+servidor creado
+la conexion se realizo bien!!
+servidor creado
+la conexion se realizo bien!!
+servidor creado
+{ email: 'a@a.com', password: 'asdqwe123', gettoken: 'true' }
+{ _id: 5b97fda6ffbf623714455cf0,
+  password: '$2a$10$OofotL1cmEYYchhwj.doMu8iePxY8rm4JHpzq3Dxoze/dI/HMjZYS',
+  activo: true,
+  image: null,
+  role: 'ROLE_USER',
+  email: 'a@a.com',
+  name: 'infoadicional',
+  __v: 0 }
+{ email: 'a@a.com', password: 'asdqwe123', gettoken: 'true' }
+{ _id: 5b97fda6ffbf623714455cf0,
+  password: '$2a$10$OofotL1cmEYYchhwj.doMu8iePxY8rm4JHpzq3Dxoze/dI/HMjZYS',
+  activo: true,
+  image: null,
+  role: 'ROLE_USER',
+  email: 'a@a.com',
+  name: 'infoadicional',
+  __v: 0 }
+la conexion se realizo bien!!
+servidor creado
+5b9ff2f5d22f4110d07bfe0c
+5b9ff2f5d22f4110d07bfe0c
+entro
+{ receiver: '5b9ff529d22f4110d07bfe0e' }
+5b9ff2f5d22f4110d07bfe0c
+5b9ff2f5d22f4110d07bfe0c
+entro
+{ receiver: '5b9ff529d22f4110d07bfe0e' }
