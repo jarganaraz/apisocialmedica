@@ -39,7 +39,6 @@ function puntuar(req,res){
      )
     .exec((err,puntajessearch) =>{
 
-    //return res.send(puntajessearch)
 
     if(err) return res.status(500).send({message : "Ocurrio un problema al buscar puntuacion"})
 
@@ -78,7 +77,6 @@ function getPuntaje (req,res){
    var  id = req.body.id;
    var i=0,total=0,prom=0;
 
-   //console.log(id);
 
     Puntaje.find({receiver : id}).exec((err,puntajes)=>{
 
@@ -94,9 +92,7 @@ if(puntajes){
       
         i=i+1;
     });
-    console.log(total)
     prom = total/(puntajes.length*3);
-    console.log(puntajes.length*3)
 
     return res.status(200).send({prom})
 }
@@ -113,8 +109,6 @@ function getPuntajes (req,res){
 
     var  id = req.body.id;
     var i=0,total=0,prom=0;
- console.log("viene la entrada")
-    console.log(id);
  
      Puntaje.find({receiver : id}).populate('emitter').exec((err,puntajes)=>{
  

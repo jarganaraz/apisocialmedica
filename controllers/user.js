@@ -14,25 +14,22 @@ var jwt = require('../services/jwt');
 
 var nodemailer = require('nodemailer');
 
-var path1 = "http://192.168.2.192/socialmedica2.0/views";
-var pathrecupass= "http://192.168.2.192:3800/api/activate-user/";
-var crearmedicodicom = "http://192.168.2.192:8300/medico/addmedico";
-var crearinstidicom ="http://192.168.2.192:8300/institucion/addinsti";
+var path1 = "http://socialmedica.visualmedica.com/views/";
+var pathrecupass= "http://socialmedica.visualmedica.com:3800/api/activate-user/";
+var crearmedicodicom = "http://socialmedica.visualmedica.com:8300/medico/addmedico";
+var crearinstidicom ="http://socialmedica.visualmedica.com:8300/institucion/addinsti";
+var updatepass ="http://socialmedica.visualmedica.com:8300/institucion/updatepassword";
 
 var util = require('util')
-
 
 //const webpush = require('web-push');
 
 // Métodos de prueba
 function home(req, res){
 
-
-
 }
 
 function pruebas(req, res){
-	//console.log(req.body);
 	res.status(200).send({
 		message: 'Acción de pruebas en el servidor de NodeJS'
 	});
@@ -43,15 +40,13 @@ function saveUser(req, res){
 	var params = req.body;
 	var user = new User();
 
-
-		
 	if(params.name && params.email && params.password){
 
 		if(params.name)
 		user.name= params.name.toUpperCase();
 		if(params.surname)
 		user.surname= params.surname.toUpperCase();
-		user.email= params.email;
+		user.email= params.email.toUpperCase();
 		user.password= params.password;
 		user.role= params.role;
 		user.image= 'null';
@@ -78,7 +73,7 @@ function saveUser(req, res){
 
 		// Controlar usuarios duplicados
 		User.find({ $or: [
-				 {email: user.email.toLowerCase()}
+				 {email: user.email}
 		 ]}).exec((err, users) => {
 		 	if(err) return res.status(500).send({message: 'Error en la petición de usuarios'});
 
@@ -95,19 +90,16 @@ function saveUser(req, res){
 
 						if(userStored){
 
-
-
 							if(params.role == "clinica"){
 								var urldicomalta=crearinstidicom;
 							}else{
 								var urldicomalta=crearmedicodicom;
 							}
 							
-
 							var options = {
 								url: urldicomalta,
 								method: 'PUT',
-								form: {name: user.name, password: params.password ,email:params.email}
+								form: {name: user.name, password: params.password.toUpperCase() ,email:params.email.toUpperCase()}
 							}
 	
 							request(options, function (error, response, body) {
@@ -116,10 +108,7 @@ function saveUser(req, res){
 								
 								if (response && response.statusCode == "200") {
 	
-
-
-
-							var textomail = '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0;padding: 0;}table, tr, td{vertical-align: top;border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important;text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell;float: none !important;vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"><style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important; display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style><table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"><a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"></a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&nbsp;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"> <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="font-size: 18px; line-height: 21px; color: rgb(255, 255, 255);"><strong>Bienvenido a Social Médica</strong></span></p></div></div></div><div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"> <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="color: rgb(255, 255, 255); font-size: 14px; line-height: 16px;">Gracias por registrarse en Social Médica, para activar su cuenta y poder contactarse con los mejores profesionales e instituciones por favor clickee el siguiente botón y siga las instrucciones.</span></p></div></div></div><div align="center" class="button-container center " style="padding-right: 10px; padding-left: 10px; padding-top:10px; padding-bottom:10px;"> <a href="'+pathrecupass+userStored._id+'" target="_blank" style="display: block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #3AAEE0; background-color: #FFFFFF; border-radius: 14px; -webkit-border-radius: 14px; -moz-border-radius: 14px; max-width: 176px; width: 136px;width: auto; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; padding-top: 5px; padding-right: 20px; padding-bottom: 5px; padding-left: 20px; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;mso-border-alt: none"> <span style="font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:16px;line-height:32px;"><strong>Active su cuenta</strong></span> </a> </div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""><div style="line-height:10px;font-size:1px">&nbsp;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="430px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=WE8GVLiPrsI" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/WE8GVLiPrsI/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/WE8GVLiPrsI/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #FFFFFF;">&nbsp;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&nbsp;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="430,242" coordorigin="0,0" href="https://www.youtube.com/watch?v=WE8GVLiPrsI" style="width:430px;height:242px;"><v:rect fill="t" stroked="f" style="position:absolute;width:430px;height:242px;"><v:fill src="https://img.youtube.com/vi/WE8GVLiPrsI/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:186px;top:92px;width:59px;height:59px"><v:fill color="black" opacity="0%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#FFFFFF" stroked="f" style="position:absolute;left:206px;top:106px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&nbsp;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&nbsp;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&nbsp;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody></table></body></html>';
+							var textomail = '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0;padding: 0;}table, tr, td{vertical-align: top;border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important;text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell;float: none !important;vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"><style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important; display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style><table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"><a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"></a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&nbsp;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"> <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="font-size: 18px; line-height: 21px; color: rgb(255, 255, 255);"><strong>Bienvenido a Social Médica</strong></span></p></div></div></div><div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"> <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="color: rgb(255, 255, 255); font-size: 14px; line-height: 16px;">Gracias por registrarse en Social Médica, para activar su cuenta y poder contactarse con los mejores profesionales e instituciones por favor clickee el siguiente botón y siga las instrucciones.</span></p></div></div></div><div align="center" class="button-container center " style="padding-right: 10px; padding-left: 10px; padding-top:10px; padding-bottom:10px;"> <a href="'+pathrecupass+userStored._id+'" target="_blank" style="display: block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #3AAEE0; background-color: #FFFFFF; border-radius: 14px; -webkit-border-radius: 14px; -moz-border-radius: 14px; max-width: 176px; width: 136px;width: auto; border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; padding-top: 5px; padding-right: 20px; padding-bottom: 5px; padding-left: 20px; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;mso-border-alt: none"> <span style="font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:16px;line-height:32px;"><strong>Activar Cuenta</strong></span> </a> </div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""><div style="line-height:10px;font-size:1px">&nbsp;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&nbsp;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="430px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=WE8GVLiPrsI" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/WE8GVLiPrsI/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/WE8GVLiPrsI/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #FFFFFF;">&nbsp;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&nbsp;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="430,242" coordorigin="0,0" href="https://www.youtube.com/watch?v=WE8GVLiPrsI" style="width:430px;height:242px;"><v:rect fill="t" stroked="f" style="position:absolute;width:430px;height:242px;"><v:fill src="https://img.youtube.com/vi/WE8GVLiPrsI/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:186px;top:92px;width:59px;height:59px"><v:fill color="black" opacity="0%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#FFFFFF" stroked="f" style="position:absolute;left:206px;top:106px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&nbsp;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&nbsp;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&nbsp;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody></table></body></html>';
 							var transporter = nodemailer.createTransport({
 								host: 'smtpout.secureserver.net',
 								pool : true,
@@ -136,7 +125,6 @@ function saveUser(req, res){
 								from: 'Jarganaraz@visualmedica.com',
 								to: user.email,
 								subject: 'Activación de cuenta de Social Medica',
-								//text: 'Active su cuenta http://vmwebserver.visualmedica.com:3800/api/activate-user/'+userStored._id+' porfa'
 								html: textomail
 							 };
 							 
@@ -153,10 +141,10 @@ function saveUser(req, res){
 							 transporter.sendMail(mailOptions, function(error, info){
 								if (error){
 									console.log(error);
-									//res.status(500).send(error);
+						
 								} else {
 									console.log("Email sent");
-									//res.status(200).send({body, user:userStored});
+
 								}
 							});
 
@@ -164,7 +152,6 @@ function saveUser(req, res){
 							if(user.role == "clinica"){
 								var mailOpt = {
 									from: 'Jarganaraz@visualmedica.com',
-									//to: 'info@visualmedica.com , soporte@visualmedica.com',
 									to:'jarganaraz@visualmedica.com',
 									subject: 'Activación de cuenta de Social Medica',
 									text: 'La institucion '+user.name+' se registro en Social Medica por favor ponerse en contacto con ella para coordinar la instalacion de un gateway al siguiente email : '+user.email+' o al siguiente telefono: '+user.telefono+'' 
@@ -186,9 +173,6 @@ function saveUser(req, res){
 							
 							res.status(200).send({user: userStored, message:'E-Mail de confirmacion enviado'});
 
-
-
-								
 								}else{
 									console.log(error)
 									//console.log(response)
@@ -199,27 +183,14 @@ function saveUser(req, res){
 										if(ponse) return res.status(400).send({message: "No se pudo crear la cuenta"});
 
 										if(!ponse) return res.status(400).send({message: "No se creo el usuario"});
-									})
-
-	
-								//return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte"})
-								
+									})								
 								}
 							})	
-
-
-		
-
 						}else{
 							res.status(404).send({message: 'No se ha registrado el usuario'});
-
-
-
 						}
-
 					});
 				});
-
 		 	}
 		 });
 		
@@ -230,12 +201,10 @@ function saveUser(req, res){
 	}
 }
 
-
 // Login
 function loginUser(req, res){
 	var params = req.body;
-
-	var email = params.email;
+	var email = params.email.toUpperCase();
 	var password = params.password;
 
 	if(!params.email || params.email == "null" || !params.password || params.password == "null"){
@@ -261,17 +230,17 @@ function loginUser(req, res){
 						}
 					}
 					else{
-						res.status(200).send({message:"el usuario no esta activo"});
+						res.status(200).send({message:"El usuario no esta activo"});
 					}
 					
 				}else{
-					return res.status(404).send({message: 'El usuario no se ha podido identificar'});
+					return res.status(404).send({message: 'Contraseña incorrecta'});
 					
 				}
 			});
 		}else{
-			console.log(err);
-			return res.status(404).send({message: 'El usuario no se ha podido identificar!!'});
+			
+			return res.status(404).send({message: 'El usuario no existe'});
 		}
 	});
 }
@@ -287,60 +256,26 @@ function getUser(req, res){
 
 		if(user) return res.status(200).send({user});
 
-		/*MedicoxInsti.findOne({
-			"medico": req.user.sub ,
-			"institucion" : req.params.id
-		}).exec((err,follow)=>{
-
-			if (err) return res.status(200).send({user});
-
-			if (follow) return res.status(200).send({user,following});
-
-			if (!follow) return res.status(200).send({user});
-
-		});*/
-
 	});
 }
 
 // Agregar borrar medico
 function addDelMedico (req,res){
-
+//todo verificar primero la dicom luego la mongo la dicom tiene mas probabilidades de fallar al insertar
 	var medicoId = req.body.id;
 	var consulta = req.body.consulta;
-
 	var instiId = req.user.sub;
 	var instimail = req.user.email;
-
-
-
 	var medicomail= req.body.email;
-
-
-//console.log(medicoId);
-//console.log(consulta);
-//console.log(instiId);
-//console.log(instimail);
-//console.log(medicomail);
-	
-
-	
 	var medicoxInsti = new MedicoxInsti();
 
 	if(!medicoId || !instiId || medicoId == "null" || instiId == "null"){
-		
-		
-
 		res.status(400).send({message : "faltan datos en la peticion"});
-
 	}
 
 	medicoxInsti.medico = medicoId;
 	medicoxInsti.institucion = instiId;
-
 	MedicoxInsti.findOne({"medico":medicoId, "institucion":instiId}).exec((err,relstored) =>{
-
-
 
 		if (err) return res.status(500).send({message : "Ocurrio un problema"});
 
@@ -349,7 +284,6 @@ function addDelMedico (req,res){
 			if (consulta == 1) 
 			{
 				res.status(200).send({message : "eso fue una consulta", type:1});
-
 			}
 			else
 			{			
@@ -362,10 +296,8 @@ function addDelMedico (req,res){
 					if (ponse){
 						console.log("entro para la dicom a borrar");
 						
-
-
 						var options = {
-							url: 'http://localhost:8300/institucion/delmedicoinsti',
+							url: 'http://socialmedica.visualmedica.com:8300/institucion/delmedicoinsti',
 							method: 'POST',
 							form: {'medicomail': medicomail, 'instimail': instimail}
 						}
@@ -375,13 +307,12 @@ function addDelMedico (req,res){
 							if (!error && response.statusCode == 200) {
 
 								console.log("bien a la dicom borrando");
-								// Print out the response body
-								//console.log(body)
-							}else{
 
+							}else{
+								//todo si ocurre problema en la dicom volver a agregar el user y hacer redirect, guardar logs
+								//con datos donde fallo y dar aviso
+						
 								console.log("error en la dicom borrando");
-							//	console.log(error);
-							//	console.log(response)
 
 							return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte"})
 							
@@ -400,8 +331,6 @@ function addDelMedico (req,res){
 
 		if (!relstored){
 
-			//console.log("creo");
-
 			if (consulta == 1){
 				 res.status(200).send({message : "eso fue una consulta", type:0});
 				}
@@ -413,14 +342,9 @@ function addDelMedico (req,res){
 					if (!addDelMedico) res.status(404).send({message: "No se pudo añadir al medico"});
 
 					if (addmedicostored) {
-						//console.log(medicoxInsti)
-						//console.log("entro para la dicom");
-
-
-
 												// Configure the request
 						var options = {
-							url: 'http://localhost:8300/institucion/addmedicoinsti',
+							url: 'http://socialmedica.visualmedica.com:8300/institucion/addmedicoinsti',
 							method: 'POST',
 							form: {'medicomail': medicomail, 'instimail': instimail}
 						}
@@ -429,24 +353,18 @@ function addDelMedico (req,res){
 						request(options, function (error, response, body) {
 							if (!error && response.statusCode == 200) {
 
-								//console.log("entro para la dicom");
-								// Print out the response body
-								//console.log(body)
-
 								res.status(200).send({message : "Se agrego al medico", type : 0});
 							}else{
 
-								console.log("error en la dicom");
+								//todo si ocurre problema en la dicom volver a agregar el user y hacer redirect, guardar logs
+								//con datos donde fallo y dar aviso
 
-								//console.log(error);
-								//console.log(response)
+								console.log("error en la dicom");
 
 								return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte"})
 							
 							}
 						})					
-
-						//return res.status(200).send({message : "El usuario se agrego correctamente", type: 0});
 					}
 
 				});
@@ -478,38 +396,32 @@ async function followThisUser(identity_user_id, user_id){
 // Devolver un listado de usuarios paginado
 function getUsers(req, res){
 	var identity_user_id = req.user.sub;
-	//console.log("hola");
 	var array = [];
-	
-
 	var page = 1;
+
 	if(req.params.page){
 		page = req.params.page;
 	}
-
-	//console.log("hola")
 
 	MedicoxInsti.find(
 		{institucion : identity_user_id }
 	,(err,resp)=>{
 		
-
-
 		if (resp){
-
 
 			resp.forEach(resp => {
 				array.push( resp.medico)
-				//console.log(array)
 			});	
 
 			var itemsPerPage = 8;
-
+//todo solo mostrar usuarios activos
 			User.find(	
 					
 						{_id: {'$ne' :identity_user_id},
 						_id: {'$nin' :array},
-						role: 'usuario'}
+						role: 'usuario',
+						activo:'true'
+					}
 				
 				
 			).sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
@@ -518,7 +430,6 @@ function getUsers(req, res){
 				if(!users) return res.status(404).send({message: 'No hay usuarios disponibles'});
 		
 				followUserIds(identity_user_id).then((value) => {
-					
 		
 				if(users) return res.status(200).send({
 						users,
@@ -528,7 +439,6 @@ function getUsers(req, res){
 						pages: Math.ceil(total/itemsPerPage),
 						actual : page
 					});
-				
 				
 				});
 		
@@ -541,7 +451,7 @@ function getUsers(req, res){
 		if(err) return res.status(500).send({message: "Ocurrio un error"});
 
 	})
-//console.log(array[0])
+
 
 }
 
@@ -615,11 +525,7 @@ async function getCountFollow(user_id){
 function updateUser(req, res){
 	var userId = req.params.id;
 	var userupdt = req.body;
-
-	// borrar propiedad password
-	delete userupdt.password;
-
-	//console.log(update);
+	delete userupdt.password;//borrar para no updatear la pass que se setea en blanco en el objeto user
 
 	if(userId != req.user.sub){
 		return res.status(500).send({message: 'No tienes permiso para actualizar los datos del usuario'});
@@ -643,18 +549,12 @@ function updateUser(req, res){
 
 				return res.status(200).send({user: userUpdated,message : "La informacion se actualizo correctamente"});
 			});
-
 		 });
-
 }
 
 // Subir archivos de imagen/avatar de usuario
 function uploadImage(req, res){
 	var userId = req.params.id;
-
-	//console.log(req);
-	
-		//console.log(req.files.image);
 
 	if(req.files && req.files != "null" && req.files.image.path && req.files.image.path != "null"){
 		var file_path = req.files.image.path;
@@ -663,9 +563,6 @@ function uploadImage(req, res){
 		var ext_split = file_name.split('\.');
 		if(ext_split[1] && ext_split[1] != "null")
 		var file_ext = ext_split[1].toLowerCase();
-
-		//console.log(req.files.image.originalFilename);
-
 
 		if(userId != req.user.sub){
 			return removeFilesOfUploads(res, file_path, 'No tienes permiso para actualizar los datos del usuario');
@@ -678,8 +575,6 @@ function uploadImage(req, res){
 				if(err) return res.status(500).send({message: 'Error en la petición'});
 
 				if(!userUpdated) return res.status(404).send({message: 'No se ha podido actualizar el usuario'});
-
-				//return res.status(200).send({user: userUpdated});
 
 				return res.status(200).send({message : "La imagen se modifico correctamente"});
 			 });
@@ -725,8 +620,6 @@ function getImageFile(req, res){
 function uploadCurriculum(req, res){
 	var userId = req.params.id;
 	
-
-
     if(userId != req.user.sub){
 		if(req.files.curriculum.path)
 		removeFilesOfUploads(res,req.files.curriculum.path,"no tienes permisos para modificar otro usuario");
@@ -739,7 +632,6 @@ function uploadCurriculum(req, res){
 		var file_path = req.files.curriculum.path;
 		var file_split = file_path.split('\\');
 		var file_name = file_split[2];
-
 		var ext_split = file_name.split('\.');
         var file_ext = ext_split[1];
         
@@ -808,9 +700,7 @@ function changePrimera(req, res){
 					//res.status(200).send({activo: true, user: userUpdated});
 					res.status(200).send({message: 'Se ha podido actualizar el estado'});
 				}
-
 		 });
-
 }
 
 // Obtener datos usuario
@@ -828,10 +718,10 @@ function getUserData(req, res){
 
 // Obtener clinicas
 function getClinicas(req, res){
-	var identity_user_id = req.user.sub;
-	//console.log(identity_user_id);
 
+	var identity_user_id = req.user.sub;
 	var page = 1;
+
 	if(req.params.page){
 		page = req.params.page;
 	}
@@ -841,7 +731,8 @@ function getClinicas(req, res){
 	User.find(			
 
 				{_id: {'$ne' :identity_user_id},
-				role: 'clinica'}
+				role: 'clinica',
+				activo:'true'}
 
 	).sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
 		if(err) return res.status(500).send({message: 'Error en la petición'});
@@ -868,12 +759,9 @@ function getClinicas(req, res){
 // Verificar mail disponible
 function checkmail(req,res){
 
-//console.log(req.body.email);
-
-//console.log(req.body.type);
-
 	if(req.body.email){
 		var mail = req.body.email;
+		mail = mail.toUpperCase();
 	}else{
 		res.status(500).send({message: "Debe ingresar un email"});
 	}
@@ -892,8 +780,6 @@ function checkmail(req,res){
 		else
 		return res.send('false');
 		
-
-
 	}else{
 
 		if(req.body.type && req.body.type == 1)
@@ -909,9 +795,8 @@ function checkmail(req,res){
 // Obtener medicos
 function getMedicos(req, res){
 	var identity_user_id = req.user.sub;
-
-
 	var page = 1;
+
 	if(req.params.page){
 		page = req.params.page;
 	}
@@ -936,13 +821,12 @@ function getMedicos(req, res){
 			actual : page});
 		
 		});
-
-
 }
 
 //Obtener usuarios filtrado
 function getUsersFilter(req, res){
 	var identity_user_id = req.user.sub;
+	var array = [];
 	var filter;
 	var rol;
 
@@ -958,41 +842,55 @@ function getUsersFilter(req, res){
 
 	var itemsPerPage = 8;
 
+	MedicoxInsti.find(
+		{institucion : identity_user_id }
+	,(err,resp)=>{
 
+	if(err) return res.status(500).send({message:"Ocurrio un error en el servidor"});
 
+	if(resp){
 
+		resp.forEach(resp => {
+			array.push( resp.medico)
+	
+		});	
 
-	User.find(
-	{
-		$and:[
-			{role : {"$ne" : rol}},	
-	 {$or: [
-			{name :  {$regex: ".*" + filter + ".*", $options : "i"}},
-			{surname :  {$regex: ".*" + filter + ".*", $options : "i"}},
-			{studytipe :  {$regex: ".*" + filter + ".*", $options : "i"}},
-		]}
-			
-	]
-},).sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
-		if(err) return res.status(500).send({message: 'Error en la petición'});
-
-		if(!users) return res.status(404).send({message: 'No hay usuarios disponibles'});
-
-			return res.status(200).send({
-				users,
-				total,
-				pages: Math.ceil(total/itemsPerPage),
-				actual : page
+		User.find(
+			{
+				$and:[
+					{
+						role : {"$ne" : rol},
+						_id: {'$nin' :array},
+						activo:'true'
+					},	
+			 {$or: [
+					{name :  {$regex: ".*" + filter + ".*", $options : "i"}},
+					{surname :  {$regex: ".*" + filter + ".*", $options : "i"}},
+					{studytipe :  {$regex: ".*" + filter + ".*", $options : "i"}},
+				]}
+					
+			]
+		},).sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
+				if(err) return res.status(500).send({message: 'Error en la petición'});
 		
+				if(!users) return res.status(404).send({message: 'No hay usuarios disponibles'});
 		
-		});
+					return res.status(200).send({
+						users,
+						total,
+						pages: Math.ceil(total/itemsPerPage),
+						actual : page
+				});
+		
+			});	
+	}
+	})
 
-	});	
 }
 
 //Obtener medicos filtrado
 function getMedicosFilter(req, res){
-	var identity_user_id = req.user.sub;
+/*	var identity_user_id = req.user.sub;
 	var filter;
 
 	
@@ -1016,11 +914,11 @@ function getMedicosFilter(req, res){
 		{
 		$and:[
 				{institucion : identity_user_id},	
-		/*{$or: [
+		{$or: [
 				{name :  {$regex: ".*" + filter + ".*", $options : "i"}},
 				{surname :  {$regex: ".*" + filter + ".*", $options : "i"}},
 				{studytipe :  {$regex: ".*" + filter + ".*", $options : "i"}},
-		]}*/
+		]}
 				
 		]
 	},).populate("medico").sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
@@ -1034,9 +932,72 @@ function getMedicosFilter(req, res){
 			pages: Math.ceil(total/itemsPerPage),
 			actual : page});
 		
-		});
+		});*/
 
 
+
+
+
+
+	var identity_user_id = req.user.sub;
+	var array = [];
+	var filter;
+	var rol;
+
+	var page = 1;
+	if(req.params.page){
+		page = req.params.page;
+	}
+	if(req.body.filter && req.body.filter !="null"){
+		filter = req.body.filter;
+	}
+	if(req.body.role && req.body.role != "null")
+		rol = req.body.role;
+
+	var itemsPerPage = 8;
+
+
+
+	MedicoxInsti.find(
+		{institucion : identity_user_id }
+	,(err,resp)=>{
+
+	if(err) return res.status(500).send({message:"Ocurrio un error en el servidor"});
+
+	if(resp){
+
+		resp.forEach(resp => {
+			array.push( resp.medico)
+	
+		});	
+
+		User.find(
+			{
+				$and:[
+					{role : {"$ne" : rol}, _id: {'$in' :array}},	
+			 {$or: [
+					{name :  {$regex: ".*" + filter + ".*", $options : "i"}},
+					{surname :  {$regex: ".*" + filter + ".*", $options : "i"}},
+					{studytipe :  {$regex: ".*" + filter + ".*", $options : "i"}},
+				]}
+					
+			]
+		},).sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
+				if(err) return res.status(500).send({message: 'Error en la petición'});
+		
+				if(!users) return res.status(404).send({message: 'No hay usuarios disponibles'});
+		
+					return res.status(200).send({
+						users,
+						total,
+						pages: Math.ceil(total/itemsPerPage),
+						actual : page
+				});
+		
+			});	
+
+	}
+	})
 }
 
 //Crear web para cambio pass
@@ -1046,7 +1007,7 @@ function solicambiarcontrasenia(req,res){
 
 	if(req.body.email && req.body.email != "null"){
 
-	bcrypt.hash(req.body.email, null, null, (err, hash) => {
+	bcrypt.hash(req.body.email.toUpperCase(), null, null, (err, hash) => {
 		hashlink = hash;
 		
 	
@@ -1067,18 +1028,15 @@ var transporter = nodemailer.createTransport({
 	}
  });
  
-var htmlmsg = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0; padding: 0;}table, tr, td{vertical-align: top; border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important; text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell; float: none !important; vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"> <style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important;display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style> <table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"><td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"> </a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="color: rgb(255, 255, 255); font-size: 16px; line-height: 19px;">Recupere su Contraseña</span></p></div></div></div><div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><span style="color: rgb(255, 255, 255); font-size:14px; line-height:17px;">Este es un e-mail de recuperación de contraseña, si usted no solicito el cambio de contraseña ignore este mensaje, o póngase en contacto con el soporte.-</span></div></div></div><div align="center" class="button-container center " style="padding-right: 10px; padding-left: 10px; padding-top:10px; padding-bottom:10px;"> <a href='+path1+'/cambiocontraseña.html?token='+hashlink+'&email='+req.body.email+'" target="_blank" style="display: block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #0068A5; background-color: #F9F9FF; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; max-width: 194px; width: 154px;width: auto; border-top: 0px solid transparent; border-right: 0px solid transparent; border-bottom: 0px solid transparent; border-left: 0px solid transparent; padding-top: 5px; padding-right: 20px; padding-bottom: 5px; padding-left: 20px; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;mso-border-alt: none"> <span style="font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:16px;line-height:32px;">Cambiar Contraseña</span> </a> </div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""> <div style="line-height:10px;font-size:1px">&#160;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i63.tinypic.com/e17z3m.jpg" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 430px" width="430"></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 5px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&#160;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&#160;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody> </table> </body></html>';
+var htmlmsg = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0; padding: 0;}table, tr, td{vertical-align: top; border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important; text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell; float: none !important; vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"> <style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important;display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style> <table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"><td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"> </a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="color: rgb(255, 255, 255); font-size: 16px; line-height: 19px;">Recupere su Contraseña</span></p></div></div></div><div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><span style="color: rgb(255, 255, 255); font-size:14px; line-height:17px;">Este es un e-mail de recuperación de contraseña, si usted no solicito el cambio de contraseña ignore este mensaje, o póngase en contacto con el soporte.-</span></div></div></div><div align="center" class="button-container center " style="padding-right: 10px; padding-left: 10px; padding-top:10px; padding-bottom:10px;"> <a href='+path1+'cambiocontraseña.html?token='+hashlink+'&email='+req.body.email+' target="_blank" style="display: block;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #0068A5; background-color: #F9F9FF; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; max-width: 194px; width: 154px;width: auto; border-top: 0px solid transparent; border-right: 0px solid transparent; border-bottom: 0px solid transparent; border-left: 0px solid transparent; padding-top: 5px; padding-right: 20px; padding-bottom: 5px; padding-left: 20px; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;mso-border-alt: none"> <span style="font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;font-size:16px;line-height:32px;">Cambiar Contraseña</span> </a> </div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""> <div style="line-height:10px;font-size:1px">&#160;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i63.tinypic.com/e17z3m.jpg" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 430px" width="430"></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 5px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&#160;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&#160;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody> </table> </body></html>';
 
  var mailOptions = {
 	from: 'Jarganaraz@visualmedica.com',
 	to: req.body.email,
 	subject: 'Cambio de contraseña Social Medica',
-	//text: 'Cambie su contraseña desde <a href="'+path1+'/cambiocontraseña.html?token='+hashlink+'&email='+req.body.email+'">Aqui</a>',
 	html: htmlmsg
-							
-	//html: textomail
+
  };
- 
 								// verify connection configuration
 	transporter.verify(function(error, success) {
 		if (error) {
@@ -1088,7 +1046,6 @@ var htmlmsg = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "
 			console.log('Server is ready to take our messages');
 		}
 	});
-
 
  transporter.sendMail(mailOptions, function(error, info){
 	if (error){
@@ -1118,17 +1075,14 @@ function cambiarcontrasenia(req, res){
 	var hashedpassword;
 	var password = req.body.password;
 
-	console.log(email)
-	console.log(hash)
-	console.log(password)
-
 	//find el user con este email
 	//adentro hacerle un bcrypt al mail
 	//si son iguales updateo la password
 
 	if(email && email != "null" && hash && hash !="null" && password && password != "null"){
+		email = email.toUpperCase();
 
-	User.findOne({email: email}, (err, user) => {
+	User.findOne({email: email.toUpperCase()}, (err, user) => {
 
 		if(err)  return res.status(404).send({message: "no se encontro el usuario"})
 
@@ -1142,18 +1096,41 @@ function cambiarcontrasenia(req, res){
 							User.findByIdAndUpdate(user._id, {password:hashedpassword}, {new:true}, (err, userUpdated) => {
 
 							if(userUpdated){
-								return res.status(200).send({message: "Exito"});
+								
+								request.post(
+									{
+										url:updatepass,
+										form: {email:email,password:password}
+								}, function(err,response,body){
+
+									if (response && response.statusCode == "200") {
+
+										return res.status(200).send({message: "Exito"});
+										
+									}else{
+
+										User.findByIdAndUpdate(user._id, {password:user.password}, {new:true}, (err, userUpdated) => {
+
+											console.log("problema cambiando password")
+
+										})
+
+										return res.status(500).send({messasge:"No se pudo lograr la conexion"})
+									}
+
+								})
+							
 							}else{
-								return res.status(500).send({message:"ocurrio un problema"});
+								return res.status(500).send({message:"el usuario no se pudo actualizar"});
 							}
 
 						});
 					}
 						if(err)
-						return res.status(500).send({message:"ocurrio un problema"});
+						return res.status(500).send({message:"no se pudo crear el hash"});
 					});
 				}else{
-					return res.status(500).send({message:"ocurrio un problema"})
+					return res.status(500).send({message:"token invalido"})
 				}
 			})
 		}
@@ -1169,14 +1146,10 @@ else{
 
 // Envio de mail de contacto
 function enviarMailContacto(req,res){
-/*
-	console.log("entro");
-	console.log(req.body.email);
-	console.log(req.body.name );
-	console.log(req.body.message);
-*/
-	if(req.user && req.user != "null"){
-	var userId = req.user.sub;
+
+	if(req.body.id && req.body.id != "null" && req.body.id != 0){
+
+	var userId = req.body.id;
 
 	if(req.body.email && req.body.email != "null" && req.body.name && req.body.name != "null" && req.body.message && req.body.message != "null" && req.body.telefono && req.body.telefono != "null"){
 		 	
@@ -1203,7 +1176,6 @@ function enviarMailContacto(req,res){
 					from: req.body.email,
 					to: 'jarganaraz@visualmedica.com',
 					subject: 'Contacto',
-					//text: 'Active su cuenta http://vmwebserver.visualmedica.com:3800/api/activate-user/'+userStored._id+' porfa'
 					html: textomail
 				 };
 				 
@@ -1212,76 +1184,51 @@ function enviarMailContacto(req,res){
 						if (error) {
 							console.log(error);
 						} else {
-							console.log('Server is ready to take our messages');
-						}
-					});
 
-				 transporter.sendMail(mailOptions, function(error, info){
-					if (error){
-						//console.log(error);
-						return res.status(500).send(error);
-					} else {
-						//console.log("Email sent");
-						//return res.status(200).send({message : "El email se envio correctamente"});
-
-						var textomail1 = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0; padding: 0;}table, tr, td{vertical-align: top; border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important; text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell; float: none !important; vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"> <style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important;display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style> <table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"><td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"> </a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="color: rgb(255, 255, 255); font-size: 16px; line-height: 19px;">Gracias por comunicarse con el soporte de Visual Medica</span></p></div></div></div><div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="color: rgb(255, 255, 255); font-size: 14px; line-height: 16px;">En el caso de ser necesario para brindarle soporte remoto por favor descargue Vm-Support desde<span style="font-size: 14px; line-height: 16px;"> <a style="color:#BBBBBB" href="http://visualmedica.com/uploads/products/VM_REMOTE_SUPPORT.exe" target="_blank" rel="noopener"><span style="font-size: 14px; line-height: 16px;">" Aquí "</span></a></span></span></p></div></div></div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""> <div style="line-height:10px;font-size:1px">&#160;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i63.tinypic.com/e17z3m.jpg" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 430px" width="430"></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 5px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&#160;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&#160;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody> </table> </body></html>';
-						var transporter = nodemailer.createTransport({
-							host: 'smtpout.secureserver.net',
-							pool : true,
-							secure : true,
-														
-							auth: {
-								type : 'AUTH LOGIN',
-								user: 'jarganaraz@visualmedica.com',
-								pass: 'ASDqwe123'
-							}
-						 });
-						 
-						 var mailOptions = {
-							from: "jarganaraz@visualmedica.com",
-							to: req.body.email,
-							subject: 'Contacto',
-							//text: 'Active su cuenta http://vmwebserver.visualmedica.com:3800/api/activate-user/'+userStored._id+' porfa'
-							html: textomail1
-						 };
-														// verify connection configuration
-							transporter.verify(function(error, success) {
-								if (error) {
-									console.log(error);
+							transporter.sendMail(mailOptions, function(error, info){
+								if (error){
+									return res.status(500).send(error);
 								} else {
-									console.log('Server is ready to take our messages');
+			
+									var textomail1 = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0; padding: 0;}table, tr, td{vertical-align: top; border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important; text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell; float: none !important; vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"> <style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important;display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style> <table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"><td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"> </a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="color: rgb(255, 255, 255); font-size: 16px; line-height: 19px;">Gracias por comunicarse con el soporte de Visual Medica</span></p></div></div></div><div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="color: rgb(255, 255, 255); font-size: 14px; line-height: 16px;">En el caso de ser necesario para brindarle soporte remoto por favor descargue VM-REMOTE-SUPPORT desde<span style="font-size: 14px; line-height: 16px;"> <a style="color:#BBBBBB" href="http://visualmedica.com/uploads/products/VM_REMOTE_SUPPORT.exe" target="_blank" rel="noopener"><span style="font-size: 14px; line-height: 16px;">" Aquí "</span></a></span></span></p></div></div></div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""> <div style="line-height:10px;font-size:1px">&#160;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i63.tinypic.com/e17z3m.jpg" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 430px" width="430"></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 5px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&#160;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&#160;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody> </table> </body></html>';
+									var transporter = nodemailer.createTransport({
+										host: 'smtpout.secureserver.net',
+										pool : true,
+										secure : true,
+																	
+										auth: {
+											type : 'AUTH LOGIN',
+											user: 'jarganaraz@visualmedica.com',
+											pass: 'ASDqwe123'
+										}
+									 });
+									 
+									 var mailOptions = {
+										from: "jarganaraz@visualmedica.com",
+										to: req.body.email,
+										subject: 'Contacto Social-Medica',
+										html: textomail1
+									 };
+																	// verify connection configuration
+										transporter.verify(function(error, success) {
+											if (error) {
+												console.log(error);
+											} else {
+												transporter.sendMail(mailOptions, function(error, info){
+													if (error){
+													
+														return res.status(500).send(error);
+													} else {
+													
+														return res.status(200).send({message : "El email se envio correctamente"});
+													}
+												});
+											}
+										});														
 								}
 							});
-		
-						 transporter.sendMail(mailOptions, function(error, info){
-							if (error){
-								//console.log(error);
-								return res.status(500).send(error);
-							} else {
-								//console.log("Email sent");
-								return res.status(200).send({message : "El email se envio correctamente"});
-							}
-						});
-						request.post(
-							'http://www.yoursite.com/formpage',
-							{ json: { key: 'value' } },
-							function (error, response, body) {
-								if (!error && response.statusCode == 200) {
-									//console.log(body)
-								}
-							}
-						);
-					}
-				});
-				request.post(
-					'http://www.yoursite.com/formpage',
-					{ json: { key: 'value' } },
-					function (error, response, body) {
-						if (!error && response.statusCode == 200) {
-							//console.log(body)
 						}
-					}
-				);
+					});
 	   }
 
 });
@@ -1310,7 +1257,6 @@ function enviarMailContacto(req,res){
 			from: req.body.email,
 			to: 'jarganaraz@visualmedica.com',
 			subject: 'Contacto',
-			//text: 'Active su cuenta http://vmwebserver.visualmedica.com:3800/api/activate-user/'+userStored._id+' porfa'
 			html: textomail
 		 };
 										// verify connection configuration
@@ -1324,13 +1270,12 @@ function enviarMailContacto(req,res){
 
 		 transporter.sendMail(mailOptions, function(error, info){
 			if (error){
-				//console.log(error);
-				return res.status(500).send(error);
-			} else {
-				//console.log("Email sent");
-				//return res.status(200).send({message : "El email se envio correctamente"});
 
-				var textomail1 = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0; padding: 0;}table, tr, td{vertical-align: top; border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important; text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell; float: none !important; vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"> <style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important;display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style> <table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"><td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"> </a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="color: rgb(255, 255, 255); font-size: 16px; line-height: 19px;">Gracias por comunicarse con el soporte de Visual Medica</span></p></div></div></div><div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="color: rgb(255, 255, 255); font-size: 14px; line-height: 16px;">En el caso de ser necesario para brindarle soporte remoto por favor descargue Vm-Support desde<span style="font-size: 14px; line-height: 16px;"> <a style="color:#BBBBBB" href="http://visualmedica.com/uploads/products/VM_REMOTE_SUPPORT.exe" target="_blank" rel="noopener"><span style="font-size: 14px; line-height: 16px;">" Aquí "</span></a></span></span></p></div></div></div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""> <div style="line-height:10px;font-size:1px">&#160;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i63.tinypic.com/e17z3m.jpg" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 430px" width="430"></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 5px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&#160;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&#160;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody> </table> </body></html>'
+				return res.status(500).send(error);
+
+			} else {
+
+				var textomail1 = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]--> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <meta name="viewport" content="width=device-width"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title></title> <style type="text/css" id="media-query"> body{margin: 0; padding: 0;}table, tr, td{vertical-align: top; border-collapse: collapse;}.ie-browser table, .mso-container table{table-layout: fixed;}*{line-height: inherit;}a[x-apple-data-detectors=true]{color: inherit !important; text-decoration: none !important;}[owa] .img-container div, [owa] .img-container button{display: block !important;}[owa] .fullwidth button{width: 100% !important;}[owa] .block-grid .col{display: table-cell; float: none !important; vertical-align: top;}.ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid{width: 860px !important;}.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{line-height: 100%;}.ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4{width: 284px !important;}.ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8{width: 568px !important;}.ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col{width: 430px !important;}.ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col{width: 286px !important;}.ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col{width: 215px !important;}.ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col{width: 172px !important;}.ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col{width: 143px !important;}.ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col{width: 122px !important;}.ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col{width: 107px !important;}.ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col{width: 95px !important;}.ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col{width: 86px !important;}.ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col{width: 78px !important;}.ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col{width: 71px !important;}@media only screen and (min-width: 880px){.block-grid{width: 860px !important;}.block-grid .col{vertical-align: top;}.block-grid .col.num12{width: 860px !important;}.block-grid.mixed-two-up .col.num4{width: 284px !important;}.block-grid.mixed-two-up .col.num8{width: 568px !important;}.block-grid.two-up .col{width: 430px !important;}.block-grid.three-up .col{width: 286px !important;}.block-grid.four-up .col{width: 215px !important;}.block-grid.five-up .col{width: 172px !important;}.block-grid.six-up .col{width: 143px !important;}.block-grid.seven-up .col{width: 122px !important;}.block-grid.eight-up .col{width: 107px !important;}.block-grid.nine-up .col{width: 95px !important;}.block-grid.ten-up .col{width: 86px !important;}.block-grid.eleven-up .col{width: 78px !important;}.block-grid.twelve-up .col{width: 71px !important;}}@media (max-width: 880px){.block-grid, .col{min-width: 320px !important; max-width: 100% !important; display: block !important;}.block-grid{width: calc(100% - 40px) !important;}.col{width: 100% !important;}.col > div{margin: 0 auto;}img.fullwidth, img.fullwidthOnMobile{max-width: 100% !important;}.no-stack .col{min-width: 0 !important; display: table-cell !important;}.no-stack.two-up .col{width: 50% !important;}.no-stack.mixed-two-up .col.num4{width: 33% !important;}.no-stack.mixed-two-up .col.num8{width: 66% !important;}.no-stack.three-up .col.num4{width: 33% !important;}.no-stack.four-up .col.num3{width: 25% !important;}.mobile_hide{min-height: 0px; max-height: 0px; max-width: 0px; display: none; overflow: hidden; font-size: 0px;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #F9F9FF"> <style type="text/css" id="media-query-bodytag"> @media (max-width: 520px){.block-grid{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col{min-width: 320px!important; max-width: 100%!important; width: 100%!important; display: block!important;}.col > div{margin: 0 auto;}img.fullwidth{max-width: 100%!important;}img.fullwidthOnMobile{max-width: 100%!important;}.no-stack .col{min-width: 0!important;display: table-cell!important;}.no-stack.two-up .col{width: 50%!important;}.no-stack.mixed-two-up .col.num4{width: 33%!important;}.no-stack.mixed-two-up .col.num8{width: 66%!important;}.no-stack.three-up .col.num4{width: 33%!important;}.no-stack.four-up .col.num3{width: 25%!important;}.mobile_hide{min-height: 0px!important; max-height: 0px!important; max-width: 0px!important; display: none!important; overflow: hidden!important; font-size: 0px!important;}}</style> <table class="nl-container" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #F9F9FF;width: 100%" cellpadding="0" cellspacing="0"><tbody><tr style="vertical-align: top"><td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <a href="https://socialmedica.visualmedica.com" target="_blank"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i64.tinypic.com/r1ey2x.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;width: 100%;max-width: 860px" width="860"> </a></div><table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 10px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> </div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid two-up "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div class=""><div style="color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="color: rgb(255, 255, 255); font-size: 16px; line-height: 19px;">Gracias por comunicarse con el soporte de Visual Medica</span></p></div></div></div><div class=""><div style="color:#555555;line-height:120%;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px"><span style="color: rgb(255, 255, 255); font-size: 14px; line-height: 16px;">En el caso de ser necesario para brindarle soporte remoto por favor descargue VM-REMOTE-SUPPORT desde<span style="font-size: 14px; line-height: 16px;"> <a style="color:#BBBBBB" href="http://visualmedica.com/uploads/products/VM_REMOTE_SUPPORT.exe" target="_blank" rel="noopener"><span style="font-size: 14px; line-height: 16px;">" Aquí "</span></a></span></span></p></div></div></div><div align="center" style="padding-right: 10px; padding-left: 10px; padding-bottom: 10px;" class=""> <div style="line-height:10px;font-size:1px">&#160;</div><div style="display: table; max-width:188px;"> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.facebook.com/visual.medica" title="Facebook" target="_blank"> <img src="http://i64.tinypic.com/np1bth.jpg" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://twitter.com/VisualMedica" title="Twitter" target="_blank"> <img src="http://i66.tinypic.com/25843o0.jpg" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 5px"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.instagram.com/visualmedicaint/?hl=en" title="Instagram" target="_blank"> <img src="http://i67.tinypic.com/of9jcg.jpg" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0"> <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"> <a href="https://www.youtube.com/channel/UCA_zdFrYw4Jgg-N1IOT2vuQ" title="YouTube" target="_blank"> <img src="http://i64.tinypic.com/jb5v81.jpg" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important"> </a> <div style="line-height:5px;font-size:1px">&#160;</div></td></tr></tbody></table> </div></div></div></div></div><div class="col num6" style="min-width: 320px;max-width: 430px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <div align="center" class="img-container center autowidth fullwidth " style="padding-right: 0px; padding-left: 0px;"> <img class="center autowidth fullwidth" align="center" border="0" src="http://i63.tinypic.com/e17z3m.jpg" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 430px" width="430"></div></div></div></div></div></div></div><div style="background-color:transparent;"> <div style="Margin: 0 auto;min-width: 320px;max-width: 860px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #0068A5;" class="block-grid "> <div style="border-collapse: collapse;display: table;width: 100%;background-color:#0068A5;"> <div class="col num12" style="min-width: 320px;max-width: 860px;display: table-cell;vertical-align: top;"> <div style="background-color: transparent; width: 100% !important;"> <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%" class="divider " style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td class="divider_inner" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 10px;padding-left: 10px;padding-top: 5px;padding-bottom: 10px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <table class="divider_content" height="0px" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px solid #FFFFFF;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <tbody> <tr style="vertical-align: top"> <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%"> <span>&#160;</span> </td></tr></tbody> </table> </td></tr></tbody></table> <div style="padding-right: 0px; padding-left: 0px; padding-top: 0px; padding-bottom: 0px;"><!--[if (mso)|(IE)]><table width="860px" align="center" cellpadding="0" cellspacing="0" role="presentation"><tr><td><![endif]--><div class="video-block" style="width:100%;max-width:100%;min-width:320px"><a target="_blank" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&amp;t=" class="video-preview" style="background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;"><span><table cellpadding="0" cellspacing="0" border="0" width="100%" background="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" role="presentation" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;background-image: url(https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg);background-size: cover;min-height: 180px;min-width: 320px"><tbody><tr style="vertical-align: top"><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top"><img src="https://beefree.io/img-host/video_ratio_16-9.gif" alt="" width="100%" border="0" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;opacity: 0;visibility: hidden"></td><td width="50%" align="center" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: middle"><div class="play-button_outer" style="display: inline-block;vertical-align: middle;background-color: #FFFFFF;border: 3px solid #FFFFFF;height: 59px;width: 59px;border-radius: 100%;"><div style="padding: 14.75px 22.6923076923077px;"><div class="play-button_inner" style="border-style: solid;border-width: 15px 0 15px 20px;display: block;font-size: 0;height: 0;width: 0;border-color: transparent transparent transparent #000000;">&#160;</div></div></div></td><td width="25%" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">&#160;</td></tr></tbody></table></span></a><!--[if vml]><v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="860,484" coordorigin="0,0" href="https://www.youtube.com/watch?v=l6IJ5MKQYA8&t=" style="width:860px;height:484px;"><v:rect fill="t" stroked="f" style="position:absolute;width:860px;height:484px;"><v:fill src="https://img.youtube.com/vi/l6IJ5MKQYA8/maxresdefault.jpg" type="frame"/></v:rect><v:oval fill="t" strokecolor="#FFFFFF" strokeweight="3px" style="position:absolute;left:400px;top:212px;width:59px;height:59px"><v:fill color="#FFFFFF" opacity="100%"/></v:oval><v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="#000000" stroked="f" style="position:absolute;left:422px;top:227px;width:21px;height:30px;"/></v:group><![endif]--></div></div></div></div></div></div></div></div></td></tr></tbody> </table> </body></html>'
 				var transporter = nodemailer.createTransport({
 					host: 'smtpout.secureserver.net',
 					pool : true,
@@ -1346,8 +1291,7 @@ function enviarMailContacto(req,res){
 				 var mailOptions = {
 					from: "jarganaraz@visualmedica.com",
 					to: req.body.email,
-					subject: 'Contacto',
-					//text: 'Active su cuenta http://vmwebserver.visualmedica.com:3800/api/activate-user/'+userStored._id+' porfa'
+					subject: 'Contacto Social-Medica',
 					html: textomail1
 				 }; 
 												// verify connection configuration
@@ -1361,10 +1305,8 @@ function enviarMailContacto(req,res){
  
 				 transporter.sendMail(mailOptions, function(error, info){
 					if (error){
-						//console.log(error);
 						return res.status(500).send(error);
 					} else {
-						//console.log("Email sent");
 						return res.status(200).send({message : "El email se envio correctamente"});
 					}
 				});
@@ -1374,7 +1316,6 @@ function enviarMailContacto(req,res){
 					{ json: { key: 'value' } },
 					function (error, response, body) {
 						if (!error && response.statusCode == 200) {
-							//console.log(body)
 						}
 					}
 				);
@@ -1386,7 +1327,6 @@ function enviarMailContacto(req,res){
 			{ json: { key: 'value' } },
 			function (error, response, body) {
 				if (!error && response.statusCode == 200) {
-					//console.log(body)
 				}
 			}
 		);
@@ -1394,51 +1334,23 @@ function enviarMailContacto(req,res){
 
 }
 
-/*
-
-	function subscribe(req,res){
-
-
-	const subscription = req.body;
-	res.status(201).json({});
-	const payload = JSON.stringify({ title: 'test' });
-  
-	console.log(subscription);
-  
-	webpush.sendNotification(subscription, payload).catch(error => {
-	  console.error(error.stack);
-	});
-
-}*/
-
 // Verificar relacion medico institucion
 function consultamedicoxinsti (req,res){
 
 	var medicoId = req.body.medicoid;
 	var instiId = req.body.instiid;
-
-
-
-	
 	var medicoxInsti = new MedicoxInsti();
 
 	if(!medicoId || !instiId || medicoId == "null" || instiId == "null"){
 		
-		
-
-	return	res.status(400).send({message : "faltan datos en la peticion"});
+		return	res.status(400).send({message : "faltan datos en la peticion"});
 
 	}
 
 	medicoxInsti.medico = medicoId;
 	medicoxInsti.institucion = instiId;
 
-	//console.log("intento")
-
 	MedicoxInsti.findOne({"medico":medicoId, "institucion":instiId}).exec((err,relstored) =>{
-
-		console.log(relstored);
-		console.log(relstored);
 
 		
 		if (err) return res.status(500).send({message : "Ocurrio un problema",opcion:"no"});
@@ -1458,9 +1370,6 @@ function consultamedicoxinsti (req,res){
 	});
 
 }
-
-
-
 
 //Export de funciones
 module.exports = {
