@@ -37,6 +37,7 @@ api.post('/solicitarcambiocontrasenia/', UserController.solicambiarcontrasenia);
 api.post('/cambiarcontrasenia/', UserController.cambiarcontrasenia);
 api.post('/enviarmailcontacto/', UserController.enviarMailContacto);
 api.post('/consultamedicoxinsti/', md_auth.ensureAuth, UserController.consultamedicoxinsti);
+api.get('/desactivarcuenta/:id',md_auth.ensureAuth , UserController.deactivateAcc)
 //api.post('/subscribe', UserController.subscribe);
 
 
