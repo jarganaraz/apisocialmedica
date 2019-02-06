@@ -1,0 +1,16 @@
+INSERT INTO tb_usuarios_equipos (fd_usuarios_fk,fd_equipos_fk,fd_habilitado) VALUES ((SELECTfd_usuarios_pk FROM tb_users WHERE fd_email like'MHERRERA@VISUALMEDICA.COM') ,(SELECT fd_equipos_pk FROM tb_equipos WHERE fd_instituciones_fk =(SELECT fd_institucion_pk FROM tb_instituciones WHERE fd_email like 'JARGANARAZ@VISUALMEDICA.COM')),true)
+
+INSERT INTO tb_institucion_usuario 
+(fd_usuario_pk,fd_institucion_pk) 
+VALUES 
+((SELECT fd_usuarios_pk FROM tb_users WHERE fd_usuario like 'MHERRERA@VISUALMEDICA.COM')
+,(SELECT fd_institucion_pk FROMtb_instituciones WHERE fd_email like 'JARGANARAZ@VISUALMEDICA.COM') )
+
+
+INSERT INTO tb_usuarios_equipos 
+(fd_usuarios_fk,fd_equipos_fk,fd_habilitado) 
+VALUES 
+((SELECT fd_usuarios_pk FROM tb_users WHERE fd_usuario like 'MHERRERA@VISUALMEDICA.COM') 
+,(SELECT fd_equipos_pk FROM tb_equipos WHERE fd_instituciones_fk = 
+(SELECT fd_institucion_pk FROM tb_instituciones WHERE fd_email like 'JARGANARAZ@VISUALMEDICA.COM'))
+ ,true)

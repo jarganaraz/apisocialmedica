@@ -37,7 +37,10 @@ api.post('/solicitarcambiocontrasenia/', UserController.solicambiarcontrasenia);
 api.post('/cambiarcontrasenia/', UserController.cambiarcontrasenia);
 api.post('/enviarmailcontacto/', UserController.enviarMailContacto);
 api.post('/consultamedicoxinsti/', md_auth.ensureAuth, UserController.consultamedicoxinsti);
-api.get('/desactivarcuenta/:id',md_auth.ensureAuth , UserController.deactivateAcc)
+api.get('/desactivarcuenta/:id',md_auth.ensureAuth , UserController.deactivateAcc);
+api.get('/instisxmedico/:page?', md_auth.ensureAuth, UserController.getInstisxMedico);
+api.post('/adddelinsti', md_auth.ensureAuth, UserController.addDelInsti);
+api.post('/institucionfilter/:page?', md_auth.ensureAuth, UserController.getinstisxmedfilter);
 //api.post('/subscribe', UserController.subscribe);
 
 

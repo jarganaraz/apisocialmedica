@@ -15,10 +15,10 @@ var jwt = require('../services/jwt');
 var nodemailer = require('nodemailer');
 
 var path1 = "http://socialmedica.visualmedica.com/views/";
-var pathrecupass= "http://socialmedica.visualmedica.com:3800/api/activate-user/";
-var crearmedicodicom = "http://socialmedica.visualmedica.com:8300/medico/addmedico";
-var crearinstidicom ="http://socialmedica.visualmedica.com:8300/institucion/addinsti";
-var updatepass ="http://socialmedica.visualmedica.com:8300/institucion/updatepassword";
+var pathrecupass= "http://127.0.0.1:3800/api/activate-user/";
+var crearmedicodicom = "http://127.0.0.1:8300/medico/addmedico";
+var crearinstidicom ="http://127.0.0.1:8300/institucion/addinsti";
+var updatepass ="http://127.0.0.1:8300/institucion/updatepassword";
 
 var util = require('util')
 
@@ -203,9 +203,13 @@ function saveUser(req, res){
 
 // Login
 function loginUser(req, res){
+
+	console.log("entro aca")
 	var params = req.body;
 	var email = params.email.toUpperCase();
 	var password = params.password;
+
+	console.log(email,password)
 
 	if(!params.email || params.email == "null" || !params.password || params.password == "null"){
 		return res.status(400).send({message : "Ingrese todos los datos"});
@@ -270,6 +274,7 @@ function addDelMedico (req,res){
 	var medicomail= req.body.email;
 	var medicoxInsti = new MedicoxInsti();
 
+
 	if(!medicoId || !instiId || medicoId == "null" || instiId == "null"){
 		res.status(400).send({message : "faltan datos en la peticion"});
 	}
@@ -298,7 +303,7 @@ function addDelMedico (req,res){
 						console.log("entro para la dicom a borrar");
 						
 						var options = {
-							url: 'http://socialmedica.visualmedica.com:8300/institucion/delmedicoinsti',
+							url: 'http://127.0.0.1:8300/institucion/delmedicoinsti',
 							method: 'POST',
 							form: {'medicomail': medicomail, 'instimail': instimail}
 						}
@@ -315,7 +320,7 @@ function addDelMedico (req,res){
 						
 								console.log("error en la dicom borrando");
 
-							return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte"})
+							return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte3"})
 							
 							}
 						})	
@@ -345,7 +350,7 @@ function addDelMedico (req,res){
 					if (addmedicostored) {
 												// Configure the request
 						var options = {
-							url: 'http://socialmedica.visualmedica.com:8300/institucion/addmedicoinsti',
+							url: 'http://127.0.0.1:8300/institucion/addmedicoinsti',
 							method: 'POST',
 							form: {'medicomail': medicomail, 'instimail': instimail}
 						}
@@ -362,7 +367,7 @@ function addDelMedico (req,res){
 
 								console.log("error en la dicom");
 
-								return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte"})
+								return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte1"})
 							
 							}
 						})					
@@ -414,7 +419,7 @@ function getUsers(req, res){
 				array.push( resp.medico)
 			});	
 
-			var itemsPerPage = 8;
+			var itemsPerPage = 4;
 //todo solo mostrar usuarios activos
 			User.find(	
 					
@@ -730,7 +735,7 @@ function getClinicas(req, res){
 		page = req.params.page;
 	}
 
-	var itemsPerPage = 3;
+	var itemsPerPage = 4;
 
 	User.find(			
 
@@ -805,11 +810,11 @@ function getMedicos(req, res){
 		page = req.params.page;
 	}
 
-	var itemsPerPage = 8;
+	var itemsPerPage = 4;
 
 	MedicoxInsti.find(			
 
-				{institucion: identity_user_id,activo:'true'}
+				{institucion: identity_user_id}
 
 	).populate("medico").sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
 
@@ -844,7 +849,7 @@ function getUsersFilter(req, res){
 	if(req.body.role && req.body.role != "null")
 		rol = req.body.role;
 
-	var itemsPerPage = 8;
+	var itemsPerPage = 4;
 
 	MedicoxInsti.find(
 		{institucion : identity_user_id }
@@ -958,7 +963,7 @@ function getMedicosFilter(req, res){
 	if(req.body.role && req.body.role != "null")
 		rol = req.body.role;
 
-	var itemsPerPage = 8;
+	var itemsPerPage = 4;
 
 
 
@@ -974,11 +979,16 @@ function getMedicosFilter(req, res){
 			array.push( resp.medico)
 	
 		});	
+		
 
 		User.find(
 			{
 				$and:[
-					{role : {"$ne" : rol}, _id: {'$in' :array},activo:'true'},	
+					{
+						role : {"$ne" : rol},
+						_id: {'$in' :array},
+						activo:'true'
+					},	
 			 {$or: [
 					{name :  {$regex: ".*" + filter + ".*", $options : "i"}},
 					{surname :  {$regex: ".*" + filter + ".*", $options : "i"}},
@@ -1360,13 +1370,13 @@ function consultamedicoxinsti (req,res){
 		if (err) return res.status(500).send({message : "Ocurrio un problema",opcion:"no"});
 
 		if (relstored ) {
-			console.log("intento medico");
+			//console.log("intento medico");
 			return res.status(200).send({message: "Relacion Encontrada",opcion:"si"});
 
 		}
 
 		if (!relstored ){
-			console.log("intento malo")
+			//console.log("intento malo")
 		 return res.status(200).send({message : "No se encontro relacion",opcion:"no"});
 		}
 
@@ -1438,6 +1448,225 @@ function enviomailactivacion(id,email){
 
 }
 
+//obtengo la lista de instituciones que agrego al medico
+function getInstisxMedico(req, res){
+	var identity_user_id = req.user.sub;
+	var page = 1;
+
+	if(req.params.page){
+		page = req.params.page;
+	}
+
+	var itemsPerPage = 4;
+
+	MedicoxInsti.find(			
+
+				{medico: identity_user_id}
+
+	).populate("institucion").sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
+
+		//console.log(users);
+		if(err) return res.status(500).send({message: 'Error en la petición'});
+
+		if(!users) return res.status(404).send({message: 'No hay usuarios disponibles'});
+
+		if (users) return res.status(200).send({
+			users,
+			total,
+			pages: Math.ceil(total/itemsPerPage),
+			actual : page});
+		
+		});
+}
+
+
+
+function addDelInsti (req,res){
+	//todo verificar primero la dicom luego la mongo la dicom tiene mas probabilidades de fallar al insertar
+		var medicoId = req.user.sub;
+		var consulta = req.body.consulta;//
+		var instiId = req.body.id;//
+		var medicomail = req.user.email;// arreglado mails
+		var instimail = req.body.email;// 
+		var medicoxInsti = new MedicoxInsti();
+	
+		if(!medicoId || !instiId || medicoId == "null" || instiId == "null"){
+			res.status(400).send({message : "faltan datos en la peticion"});
+		}
+	
+		medicoxInsti.medico = medicoId;
+		medicoxInsti.institucion = instiId;
+		MedicoxInsti.findOne({"medico":medicoId, "institucion":instiId}).exec((err,relstored) =>{
+	
+			if (err) return res.status(500).send({message : "Ocurrio un problema"});
+	
+			if (relstored){
+	
+				if (consulta == 1) 
+				{
+					res.status(200).send({message : "eso fue una consulta", type:1});
+				}
+				else
+				{			
+					MedicoxInsti.findByIdAndRemove(relstored._id,(err,ponse)=>{
+	
+						console.log("borro");
+	
+						if (err) res.status(500).send({message : "Ocurrio un error"});
+	
+						if (ponse){
+							console.log("entro para la dicom a borrar");
+							
+							var options = {
+								url: 'http://127.0.0.1:8300/institucion/delmedicoinsti',
+								method: 'POST',
+								form: {'medicomail': medicomail, 'instimail': instimail}
+							}
+	
+							// Start the request
+							request(options, function (error, response, body) {
+								if (!error && response.statusCode == 200) {
+	
+									console.log("bien a la dicom borrando");
+	
+								}else{
+									//todo si ocurre problema en la dicom volver a agregar el user y hacer redirect, guardar logs
+									//con datos donde fallo y dar aviso
+							
+									console.log("error en la dicom borrando");
+	
+								return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte"})
+								
+								}
+							})	
+	
+							res.status(200).send({message : "El medico se borro correctamente", type: 1});
+						}
+	
+						if (!ponse) res.status(404).send({message : "No se encontro una relacion"});
+	
+					});
+				}
+	
+			}
+	
+			if (!relstored){
+	
+				if (consulta == 1){
+					 res.status(200).send({message : "eso fue una consulta", type:0});
+					}
+				else{
+					medicoxInsti.save((err,addmedicostored)=>{
+	
+						if (err) return res.status(500).send({message : "Error en la peticion"});
+	
+						if (!addDelMedico) res.status(404).send({message: "No se pudo añadir al medico"});
+	
+						if (addmedicostored) {
+													// Configure the request
+							var options = {
+								url: 'http://127.0.0.1:8300/institucion/addmedicoinsti',
+								method: 'POST',
+								form: {'medicomail': medicomail, 'instimail': instimail}
+							}
+	
+							// Start the request
+							request(options, function (error, response, body) {
+								if (!error && response.statusCode == 200) {
+	
+									res.status(200).send({message : "Se agrego al medico", type : 0});
+								}else{
+	
+									//todo si ocurre problema en la dicom volver a agregar el user y hacer redirect, guardar logs
+									//con datos donde fallo y dar aviso
+	
+									console.log("error en la dicom");
+	
+									return res.status(404).send({message:"Ocurrio un problema al agregar el medico comuniquese con el soporte4"})
+								
+								}
+							})					
+						}
+	
+					});
+				}
+			}
+	
+		});
+	
+	}
+
+
+	//obtener instituciones filtradas
+
+
+	function getinstisxmedfilter(req, res){
+		
+			var identity_user_id = req.user.sub;
+			var array = [];
+			var filter;
+			var rol;
+		
+			var page = 1;
+			if(req.params.page){
+				page = req.params.page;
+			}
+			if(req.body.filter && req.body.filter !="null"){
+				filter = req.body.filter;
+			}
+			if(req.body.role && req.body.role != "null")
+				rol = req.body.role;
+		
+			var itemsPerPage = 4;
+		
+		
+			MedicoxInsti.find(
+				{medico : identity_user_id }
+			,(err,resp)=>{
+		
+			if(err) return res.status(500).send({message:"Ocurrio un error en el servidor"});
+		
+			if(resp){
+				
+				resp.forEach(resp => {
+					array.push( resp.institucion)
+			
+				});	
+				//return res.status(200).send({resp:resp,array:array})
+				User.find(
+					{
+						$and:[
+							{
+								role : {"$ne" : rol},
+								_id: {'$in' :array},
+								activo:'true'
+							},	
+					 {$or: [
+							{name :  {$regex: ".*" + filter + ".*", $options : "i"}},
+							{surname :  {$regex: ".*" + filter + ".*", $options : "i"}},
+							{studytipe :  {$regex: ".*" + filter + ".*", $options : "i"}},
+						]}
+							
+					]
+				},).sort('_id').paginate(page, itemsPerPage, (err, users, total) => {
+						if(err) return res.status(500).send({message: 'Error en la petición'});
+				
+						if(!users) return res.status(404).send({message: 'No hay usuarios disponibles'});
+				
+							return res.status(200).send({
+								users,
+								total,
+								pages: Math.ceil(total/itemsPerPage),
+								actual : page
+						});
+				
+					});	
+		
+			}
+			})
+		}
+		
+
 
 //Export de funciones
 module.exports = {
@@ -1467,6 +1696,9 @@ module.exports = {
 	enviarMailContacto,
 	//subscribe
 	consultamedicoxinsti,
-	deactivateAcc
+	deactivateAcc,
+	getInstisxMedico,
+	addDelInsti,
+	getinstisxmedfilter
 	
 }
