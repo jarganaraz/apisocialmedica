@@ -206,9 +206,9 @@ function getmessagessoli(req,res){
 		messages_clean.push(req.user.sub);
 
 		Message.find({emitter: {"$nin": messages_clean},receiver:userId}).sort('-created_at').populate('emitter', 'name surname image nick _id').paginate(page, itemsPerPage, (err, messagesrta, total) => {
-			if(err) return res.status(500).send({message: 'Error devolver publicaciones',error : err});
+			if(err) return res.status(500).send({message: 'Error devolver mensajes',error : err});
 
-			if(!messagesrta) return res.status(404).send({message: 'No hay publicaciones'});
+			if(!messagesrta) return res.status(404).send({message: 'No hay mensajes'});
 
 			setViewedMessages(userId);
 			return res.status(200).send({

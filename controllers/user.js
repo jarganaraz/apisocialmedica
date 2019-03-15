@@ -1408,8 +1408,6 @@ function enviomailactivacion(id,email){
 					});
 			}
 	});
-	
-
 }
 
 //obtengo la lista de instituciones que agrego al medico
@@ -1442,7 +1440,6 @@ function getInstisxMedico(req, res){
 		
 		});
 }
-
 
 
 function addDelInsti (req,res){
@@ -1658,7 +1655,6 @@ module.exports = {
 	solicambiarcontrasenia,
 	cambiarcontrasenia,
 	enviarMailContacto,
-	//subscribe
 	consultamedicoxinsti,
 	deactivateAcc,
 	getInstisxMedico,
@@ -1666,3 +1662,4 @@ module.exports = {
 	getinstisxmedfilter
 	
 }
+
