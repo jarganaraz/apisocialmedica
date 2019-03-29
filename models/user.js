@@ -22,7 +22,9 @@ var UserSchema = Schema({
 		tporespuesta: String,
 		formadepago: String,
 		contacto: String,
-		primera:String
+		primera:String,
+		ayuda:Boolean,
+
 
 });
 

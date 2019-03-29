@@ -1,11 +1,11 @@
 'use strict'
 
 var express = require('express');
-var MessageController = require('../controllers/message');
+var FavoritoController = require('../controllers/favorito');
 var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
 
-api.get('/probando-md', md_auth.ensureAuth, MessageController.probando);
+/*api.get('/probando-md', md_auth.ensureAuth, MessageController.probando);
 api.post('/message', md_auth.ensureAuth, MessageController.saveMessage);
 api.get('/my-messages/:page?', md_auth.ensureAuth, MessageController.getReceivedMessages);
 api.get('/messages/:page?', md_auth.ensureAuth, MessageController.getEmmitMessages);
@@ -15,7 +15,10 @@ api.post('/messagesperuser', md_auth.ensureAuth, MessageController.getMessagePer
 api.get('/getmessageshome', md_auth.ensureAuth, MessageController.getMessagesHome);
 api.get('/medicmsg/:page?', md_auth.ensureAuth, MessageController.getmessagesmedic);
 api.get('/solimsg/:page?', md_auth.ensureAuth, MessageController.getmessagessoli);
-api.get('/getchats/', md_auth.ensureAuth, MessageController.getchats);
+api.get('/getchats/', md_auth.ensureAuth, MessageController.getchats);*/
 
+api.post('/adddelfav', md_auth.ensureAuth, FavoritoController.adddelfav);
+api.post('/getsinglefav', md_auth.ensureAuth, FavoritoController.getsinglefav);
+api.post('/getfavlist', md_auth.ensureAuth, FavoritoController.getallfavs);
 
 module.exports = api;

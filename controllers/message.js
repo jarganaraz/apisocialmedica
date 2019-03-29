@@ -6,6 +6,7 @@ var mongoosePaginate = require('mongoose-pagination');
 var User = require('../models/user');
 var Follow = require('../models/follow');
 var Message = require('../models/message');
+var Chat = require('../models/chat');
 var MedicoxInsti = require('../models/medicoxinstitucion');
 
 function probando(req, res){
@@ -13,24 +14,66 @@ function probando(req, res){
 }
 
 function saveMessage(req, res){
-	console.log('intentando guardar');
+
 	var params = req.body;
 
 	if(!params.text || !params.receiver) return res.status(200).send({message: 'Envia los datos necesarios'});
+	//viejo
+	//var message = new Message();
+	//message.emitter = req.user.sub;
+	//message.receiver = params.receiver;
+	//message.text = params.text;
+	//message.created_at = moment().toDate();
+	//message.viewed = 'false';
 
 	var message = new Message();
-	message.emitter = req.user.sub;
-	message.receiver = params.receiver;
 	message.text = params.text;
-	message.created_at = moment().toDate();
 	message.viewed = 'false';
+	message.created_at = moment().toDate();
+	message.emitter=req.user.sub;
+	message.receiver=params.receiver;
+	//message.chat= este es el que me falta
 
-	message.save((err, messageStored) => {
+	var chat = new Chat();
+	chat.emitter = req.user.sub;
+	chat.receiver = params.receiver;
+	chat.lastmsg = params.text;
+	chat.lastmsgdate = moment().toDate();
+
+
+	Chat.findOneAndUpdate({$or: [
+		{emitter : req.user.sub, receiver: params.receiver  },
+		{receiver : req.user.sub, emitter: params.receiver },
+	]},
+		{emitter : req.user.sub, receiver: params.receiver,lastmsg:params.text,lastmsgdate:moment().toDate(),lastactive:req.user.sub},{upsert:true,new:true},(err,chat)=>{
+
+		if(err) return res.status(500).send({message:"Error al buscar chat"});
+
+		if(chat){
+			message.chat=chat._id;
+			
+
+			message.save((err, messageStored) => {
+				if(err) return res.status(500).send({message: 'Error en la petición'});
+				if(!messageStored) return res.status(500).send({message: 'Error al enviar el mensaje'});
+		
+				return res.status(200).send({message: "El mensaje se envio correctamente"});
+			})
+		}
+
+		
+
+	})
+
+
+
+	//viejo
+	/*message.save((err, messageStored) => {
 		if(err) return res.status(500).send({message: 'Error en la petición'});
 		if(!messageStored) return res.status(500).send({message: 'Error al enviar el mensaje'});
 
 		return res.status(200).send({message: "El mensaje se envio correctamente"});
-	});
+	});*/
 }
 
 function getReceivedMessages(req, res){
@@ -133,12 +176,12 @@ function getMessagePerUser(req,res){
 		]
 	}).
 	populate('receiver emitter' , 'name surname').
-	sort({created_at:'desc'}).
+	sort({created_at:'asc'}).
 	exec(function (err, messages) {
 		if (err) return res.status(500).send(err);
 		
 		if (messages){
-
+			setViewedMessages(userId);
 		 return res.status(200).send(messages);
 	}
 		if (!messages) return res.status(500).send({message:"No se encontraron mensajes"});
@@ -225,6 +268,39 @@ function getmessagessoli(req,res){
 }
 
 
+function getchats(req,res){
+
+	/*Chat.find({$or: [
+		{emitter : req.user.sub},
+		{receiver : req.user.sub},
+	]},(err,chats)=>{
+
+		if(err) return res.status(500).send({message:"Error al buscar chats"});
+
+		if(chats){
+			console.log(chats);
+			return res.status(200).send(chats)
+			
+		}
+	})*/
+
+	Chat.find({$or: [
+		{emitter : req.user.sub},
+		{receiver : req.user.sub},
+	]}).sort('lastmsgdate').populate('emitter').populate('receiver').exec((err,chats)=>{
+
+		if(err) return res.status(500).send({message:"Error al buscar chats"});
+
+		if(chats){
+
+			return res.status(200).send(chats)
+			
+		}
+	})
+
+}
+
+
 module.exports = {
 	probando,
 	saveMessage,
@@ -235,5 +311,6 @@ module.exports = {
 	getMessagePerUser,
 	getMessagesHome,
 	getmessagesmedic,
-	getmessagessoli
+	getmessagessoli,
+	getchats
 };

@@ -41,6 +41,7 @@ api.get('/desactivarcuenta/:id',md_auth.ensureAuth , UserController.deactivateAc
 api.get('/instisxmedico/:page?', md_auth.ensureAuth, UserController.getInstisxMedico);
 api.post('/adddelinsti', md_auth.ensureAuth, UserController.addDelInsti);
 api.post('/institucionfilter/:page?', md_auth.ensureAuth, UserController.getinstisxmedfilter);
+api.get('/updatehelp/', md_auth.ensureAuth, UserController.updatehelp);
 //api.post('/subscribe', UserController.subscribe);
 
 

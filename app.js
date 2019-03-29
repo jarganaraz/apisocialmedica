@@ -12,7 +12,9 @@ var publication_routes = require('./routes/publication');
 var message_routes = require('./routes/message');
 var personal_routes = require('./routes/personal');
 var empresa_routes = require('./routes/empresa');
-var puntaje_routes = require('./routes/puntaje')
+var puntaje_routes = require('./routes/puntaje');
+var favorito_routes = require('./routes/favorito');
+var calendario_routes = require('./routes/calendario');
 
 // middlewares
 app.use(bodyParser.urlencoded({extended:false}));
@@ -35,7 +37,9 @@ app.use('/api', publication_routes);
 app.use('/api', message_routes);
 app.use('/personal', personal_routes);
 app.use('/empresa', empresa_routes);
-app.use('/api',puntaje_routes)
+app.use('/api',puntaje_routes);
+app.use('/api',favorito_routes)
+app.use('/api',calendario_routes)
 
 // exportar
 module.exports = app;

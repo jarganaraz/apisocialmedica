@@ -35,7 +35,7 @@ function saveUser(req, res){
 	var params = req.body;
 	var user = new User();
 
-	if(params.name && params.email && params.password){
+	if(params.name && params.email && params.password && params.role){
 
 		if(params.name)
 		user.name= params.name.toUpperCase();
@@ -245,6 +245,7 @@ function getUser(req, res){
 	var userId = req.params.id;
 
 	User.findById(userId, (err, user) => {
+		
 		if(err) return res.status(500).send({message: 'Error en la petición'});
 
 		if(!user) return res.status(404).send({message: 'El usuario no existe'});
@@ -1628,6 +1629,20 @@ function addDelInsti (req,res){
 		}
 		
 
+function updatehelp(req, res){
+
+	var userId = req.user.sub;
+
+	User.findByIdAndUpdate(userId, {ayuda:true}, {new:true}, (err, userUpdated) => {
+		if(err) return res.status(500).send({message: 'Error en la petición'});
+
+		if(!userUpdated) return res.status(404).send({message: 'No se ha podido actualizar el usuario'});
+
+		return res.status(200).send({user: userUpdated,message : "La informacion se actualizo correctamente"});
+});
+
+}
+
 
 //Export de funciones
 module.exports = {
@@ -1659,7 +1674,8 @@ module.exports = {
 	deactivateAcc,
 	getInstisxMedico,
 	addDelInsti,
-	getinstisxmedfilter
+	getinstisxmedfilter,
+	updatehelp
 	
 }
 
